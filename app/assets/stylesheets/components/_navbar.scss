@@ -1,14 +1,25 @@
 .navbar-lewagon {
   justify-content: space-between;
   background: white;
-}
 
+}
+.nav-link{
+  font-family: "Poppins";
+  font-weight:500;
+  text-transform: uppercase;
+  color:black;
+  transition: all 0.3s ease;
+  margin: 0 15px;
+}
+.nav-link:hover{
+  color:gold;
+}
 .navbar-lewagon .navbar-collapse {
   flex-grow: 0;
 }
 
 .navbar-lewagon .navbar-brand img {
-  width: 100px;
+  width: 140px;
 }
 .navbar-toggler{
   border: 0 ;
