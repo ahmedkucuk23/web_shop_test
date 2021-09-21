@@ -3,4 +3,6 @@ Rails.application.routes.draw do
   root to: 'pages#home'
   resources :teddies, only: [:index, :show]
 
+  resources :orders, only: [:show, :create]
+
 end
