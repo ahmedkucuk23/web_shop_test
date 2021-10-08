@@ -1,19 +1,33 @@
 <!-- app/views/teddies/index.html.erb -->
 <div class="container">
-  <h1>Teddies</h1>
-  <div class="row">
-    <% @teddies.each do |teddy| %>
-      <div class="col-6 col-md-4">
-        <div class="card">
-          <%= image_tag teddy.photo_url , class: "card-img-top" %>
-          <div class="card-body">
-            <h5 class="card-title"><%= teddy.name %></h5>
-            <p class="card-text"><%= teddy.category.name %></p>
-            <p>Amount: <%= humanized_money_with_symbol(teddy.price) %></p>
-            <%= link_to "More details", teddy_path(teddy), class: "btn btn-primary" %>
+  <h1 class="header_text">Your Cart:</h1>
+  <%= debug session[:cart] %>
+
+  <h1 class="text">Teddies</h1>
+    <div class="d-flex row">
+      <% @teddies.each do |teddy| %>
+      <div class="col-lg-4 col-md-4 col-sm-12 ">
+          <div class="card ">
+            <%= image_tag teddy.photo_url , class: "card-img-top" %>
+            <div class="card-body">
+              <h5 class="card-title text"><%= teddy.name %></h5>
+              <p class="card-text text"><%= teddy.category.name %></p>
+              <p class="text">Amount: <%= humanized_money_with_symbol(teddy.price) %></p>
+            <li class="content__item">
+              <button class="button button--mimas">
+                <span>
+                  <%= link_to "More details", teddy_path(teddy) %>
+                </span>
+              </button>
+              <button class="button button--pan">
+                <span>
+                  <%= link_to "Add to cart", add_to_cart_path(teddy.id) , method: :post %>
+                </span>
+              </button>
+            </li>
+            </div>
           </div>
-        </div>
       </div>
-    <% end %>
-  </div>
+      <% end %>
+    </div>
 </div>

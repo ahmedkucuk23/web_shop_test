@@ -2,7 +2,7 @@
   <div class="home_header">
     <%= image_tag "https://upload.wikimedia.org/wikipedia/commons/d/df/Family_Portrait.jpg", class: "home_header_picture" %>
     <div class="container d-flex justify-content-center align-items-center">
-      <h1 class="home_header_header centered d-flex justify-content-center">Home Page for Web shop</h1>
+      <h1 class="home_header_header centered d-flex justify-content-center" >Home Page for Web shop</h1>
     </div>
   </div>
 </div>
@@ -30,3 +30,31 @@
       </div>
   </div>
 </div>
+</div>
+
+<!-- app/views/teddies/index.html.erb -->
+<div class="container">
+  <h1 class="header_text">Newest Articles</h1>
+  <div class="row">
+    <% Teddy.all.sort_by.reverse_each do |teddy| %>
+      <div class="col-6 col-md-4">
+        <div class="card">
+          <%= image_tag teddy.photo_url , class: "card-img-top" %>
+          <div class="card-body">
+            <h5 class="card-title"><%= teddy.name %></h5>
+            <p class="card-text"><%= teddy.category.name %></p>
+            <p>Amount: <h1><%= humanized_money_with_symbol(teddy.price) %></h1></p>
+            <li class="content__item">
+              <button class="button button--mimas">
+                <span>
+                  <%= link_to "More details", teddy_path(teddy) %>
+                </span>
+              </button>
+            </li>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+

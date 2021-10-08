@@ -23,6 +23,9 @@ gem 'redis', '~> 4.0'
 # gem 'bcrypt', '~> 3.1.7'
 gem 'money-rails'
 
+
+gem 'activeadmin', github: 'activeadmin/activeadmin'
+gem 'inherited_resources', github: 'activeadmin/inherited_resources'
 gem 'stripe'
 
 # Use Active Storage variant
