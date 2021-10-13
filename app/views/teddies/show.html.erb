@@ -11,15 +11,8 @@
 
       <%= form_tag orders_path do %>
         <%= hidden_field_tag 'teddy_id', @teddy.id %>
-         <li class="content__item">
-            <button class="button button--mimas">
-              <span>
-                <%= submit_tag 'Purchase' %>
-              </span>
-            </button>
-          </li>
+        <%= submit_tag 'Purchase', class: "button_black" %>
       <% end %>
-
 
     </div>
   </div>
