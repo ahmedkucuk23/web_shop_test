@@ -2,22 +2,43 @@ class TeddiesController < ApplicationController
   skip_before_action :authenticate_user!
 
   def index
-    @teddies = Teddy.all
-    @teddies = Teddy.order(params[:sort])
-
-    if params[:newest]
-      @teddies = Teddy.all.sort_by.reverse{|teddy| teddy.created_at}
-    end
-
-  end
-
-  def add_to_cart
-    session[:cart] << params[:id]
-    redirect_to teddies_path
+    @teddys = Teddy.all
   end
 
   def show
-    @teddy = Teddy.find(params[:id])
+  end
+
+  def new
+    @teddy = Teddy.new
+  end
+
+  def edit
+  end
+
+   def create
+    @teddy = Teddy.new
+    if @teddy.save
+      redirect_to @teddy, notice: "Product was successfully created."
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  # def add_to_cart
+  #   session[:cart] << params[:id]
+  #   redirect_to teddies_path
+  # end
+
+  def add_to_cart
+    id = params[:id].to_i
+    session[:cart] << id unless session[:cart].include?(id)
+    redirect_to teddies_path
+  end
+
+  def remove_from_cart
+    id = params[:id].to_i
+    session[:cart].delete(id)
+    redirect_to teddies_path
   end
 
   private

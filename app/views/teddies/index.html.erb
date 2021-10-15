@@ -1,11 +1,20 @@
 <!-- app/views/teddies/index.html.erb -->
 <div class="container">
   <h1 class="header_text">Your Cart:</h1>
-  <%= debug session[:cart] %>
+  <% @cart.each do |teddy| %>
+    <%= teddy.name %>
+    <%= humanized_money_with_symbol(teddy.price) %>
+    <br>
+  <% end %>
+   <% if @cart.present? %>
+      <%= @cart.collect { |item| item.to_builder.attributes! } %>
+      <%= button_to "Buy now!", order_create_path, remote: true, data: { disable_with: "validating..."} %>
+    <% end %>
+  <hr>
 
   <h1 class="text">Teddies</h1>
     <div class="d-flex row">
-      <% @teddies.each do |teddy| %>
+      <% @teddys.each do |teddy| %>
       <div class="col-lg-4 col-md-4 col-sm-12 ">
           <div class="card ">
             <%= image_tag teddy.photo_url , class: "card-img-top" %>
@@ -13,17 +22,19 @@
               <h5 class="card-title text"><%= teddy.name %></h5>
               <p class="card-text text"><%= teddy.category.name %></p>
               <p class="text">Amount: <%= humanized_money_with_symbol(teddy.price) %></p>
+              <p class="card-text text"><%= teddy.stripe_price_id %></p>
+
             <li class="content__item">
-              <button class="button button--mimas">
+            <!--   <button class="button button--mimas">
                 <span>
                   <%= link_to "More details", teddy_path(teddy) %>
                 </span>
-              </button>
-              <button class="button button--pan">
-                <span>
-                  <%= link_to "Add to cart", add_to_cart_path(teddy.id) , method: :post %>
-                </span>
-              </button>
+              </button> -->
+              <% if @cart.include?(teddy) %>
+                <%= button_to "Remove from cart", remove_from_cart_path(teddy), class: "button_black", method: :delete %>
+              <% else %>
+                <%= button_to "Add to cart", add_to_cart_path(teddy), class: "button_black" %>
+              <% end %>
             </li>
             </div>
           </div>

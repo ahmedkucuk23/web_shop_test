@@ -1,28 +1,38 @@
 class OrdersController < ApplicationController
 
   def create
-    teddy = Teddy.find(params[:teddy_id])
-    order  = Order.create!(teddy: teddy, teddy_sku: teddy.sku, amount: teddy.price, state: 'pending', user: current_user)
-
-    session = Stripe::Checkout::Session.create(
-      payment_method_types: ['card'],
-      line_items: [{
-        name: teddy.sku,
-        images: [teddy.photo_url],
-        amount: teddy.price_cents,
-        currency: 'eur',
-        quantity: 1
-      }],
-      success_url: order_url(order),
-      cancel_url: order_url(order)
-    )
-
-    order.update(checkout_session_id: session.id)
-    redirect_to new_order_payment_path(order)
+    if @cart.pluck(:currency).uniq.length > 1
+      redirect_to teddies_path, alert: "You can not select products with different currencies in one checkout"
+    else
+      @session = Stripe::Checkout::Session.create({
+        customer: current_user.stripe_customer_id,
+        payment_method_types: ['card'],
+        line_items: @cart.collect { |item| item.to_builder.attributes! },
+        allow_promotion_codes: true,
+        mode: 'payment',
+        success_url: success_url + "?session_id={CHECKOUT_SESSION_ID}",
+        cancel_url: cancel_url,
+      })
+      respond_to do |format|
+        format.js
+      end
+    end
   end
 
-  def show
-    @order = current_user.orders.find(params[:id])
+  def success
+    if params[:session_id].present?
+      # session.delete(:cart)
+      session[:cart] = [] # empty cart = empty array
+      @session_with_expand = Stripe::Checkout::Session.retrieve({ id: params[:session_id], expand: ["line_items"]})
+      @session_with_expand.line_items.data.each do |line_item|
+        product = Teddy.find_by(stripe_teddy_id: line_item.price.product)
+      end
+    else
+      redirect_to cancel_url, alert: "No info to display"
+    end
+  end
+
+  def cancel
   end
 
 end

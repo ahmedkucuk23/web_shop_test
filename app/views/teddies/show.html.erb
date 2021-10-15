@@ -9,6 +9,7 @@
       <p class="text">Some awesome description of our amazing teddy.</p>
       <p class="text">Amount: <%= humanized_money_with_symbol(@teddy.price) %></p>
 
+
       <%= form_tag orders_path do %>
         <%= hidden_field_tag 'teddy_id', @teddy.id %>
         <%= submit_tag 'Purchase', class: "button_black" %>
