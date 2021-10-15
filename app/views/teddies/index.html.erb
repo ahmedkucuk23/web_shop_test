@@ -6,7 +6,7 @@
     <%= humanized_money_with_symbol(teddy.price) %>
     <br>
   <% end %>
-   <% if @cart.present? %>
+    <% if @cart.present? %>
       <%= @cart.collect { |item| item.to_builder.attributes! } %>
       <%= button_to "Buy now!", order_create_path, remote: true, data: { disable_with: "validating..."} %>
     <% end %>
@@ -25,11 +25,11 @@
               <p class="card-text text"><%= teddy.stripe_price_id %></p>
 
             <li class="content__item">
-            <!--   <button class="button button--mimas">
+             <button class="button button--mimas">
                 <span>
                   <%= link_to "More details", teddy_path(teddy) %>
                 </span>
-              </button> -->
+              </button>
               <% if @cart.include?(teddy) %>
                 <%= button_to "Remove from cart", remove_from_cart_path(teddy), class: "button_black", method: :delete %>
               <% else %>

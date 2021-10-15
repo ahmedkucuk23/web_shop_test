@@ -6,6 +6,7 @@ class TeddiesController < ApplicationController
   end
 
   def show
+     @teddy = Teddy.find(params[:id])
   end
 
   def new
